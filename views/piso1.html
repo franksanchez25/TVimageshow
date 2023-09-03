@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+   <div id="image-container">
+        <img id="image" src="" alt="Image">
+    </div>
+
+    <script>
+         const imageContainer = document.getElementById('image-container');
+        const image = document.getElementById('image');
+        let imagePaths = [];
+        let currentImageIndex = 0;
+
+        function fetchImages() {
+            fetch('/getImagen')
+                .then(response => response.json())
+                .then(data => {
+                    imagePaths = data;
+                    console.log(imagePaths)
+                    showNextImage();
+                    setInterval(showNextImage, 10000);
+                })
+                .catch(error => console.error(error));
+        }
+
+        function showNextImage() {
+            if (imagePaths.length === 0) {
+                image.src = '';
+                return;
+            }
+            image.src = imagePaths[currentImageIndex];
+            currentImageIndex = (currentImageIndex + 1) % imagePaths.length;
+        }
+
+        fetchImages();
+    </script>
+    
+
+  
+</body>
+</html>
